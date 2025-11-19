@@ -1,0 +1,57 @@
+# ------------------------------------
+# General Python & Flask Files
+# ------------------------------------
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+# Distribution / packaging
+.Python
+build/
+dist/
+develop-eggs/
+sdist/
+eggs/
+*.egg-info/
+.installed.cfg
+# Environments
+.venv/
+venv/
+env/
+# IDEs
+.vscode/
+.idea/
+# Test files
+.pytest_cache/
+htmlcov/
+
+# ------------------------------------
+# Operating System Files
+# ------------------------------------
+.DS_Store
+Thumbs.db
+
+# ------------------------------------
+# Project Specific & Security
+# ------------------------------------
+# Config files that might contain secrets or local paths (e.g., database URLs)
+instance/
+config.py  # If you store secrets here
+settings.ini # Or similar config files
+
+# Uploads, Databases, and RAG Data
+# IMPORTANT: These are generated/stored locally and shouldn't be committed.
+
+# 1. Uploaded files (if they are stored in a specific folder like 'uploads')
+uploads/
+data/
+
+# 2. Database files (if using a local file-based DB like SQLite)
+*.db
+rag_database.sqlite
+
+# 3. Vector Store/Embeddings storage (if using a local index or file storage)
+# Adjust these based on how your vector store persists data.
+vector_store/
+embeddings_cache/
+.env

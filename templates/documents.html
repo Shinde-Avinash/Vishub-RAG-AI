@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>📂 Document Dashboard</h2>
+    <div class="card mt-3 shadow-sm">
+        <div class="card-header bg-white">
+            Uploaded Files
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Filename</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if docs %}
+                        {% for doc_name in docs %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><strong>{{ doc_name }}</strong></td>
+                            <td>PDF</td>
+                            <td><span class="badge bg-success">Indexed</span></td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center py-4">No documents found. Please upload one.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

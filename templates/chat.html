@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm" style="height: 80vh;">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">🤖 Vishub RAG AI</h5>
+                <small class="text-muted">Model: Llama 3.1 (Local)</small>
+            </div>
+            <div class="card-body overflow-auto" id="chat-box" style="background-color: #f8f9fa;">
+                <div class="chat-message bot-message mb-3">
+                    <div class="p-3 bg-white border rounded shadow-sm">
+                        ✨ Welcome! Upload your files and I’ll turn them into a 💡smart knowledge assistant. 🧠
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-white">
+                <div class="input-group">
+                    <input type="text" id="user-input" class="form-control" placeholder="Type your question here..." onkeypress="handleEnter(event)">
+                    <button class="btn btn-primary" id="send-btn" onclick="sendMessage()">
+                        <i class="bi bi-send"></i> Send
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<script>
+    function handleEnter(e) {
+        if (e.key === "Enter") sendMessage();
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('user-input');
+        const chatBox = document.getElementById('chat-box');
+        const query = input.value.trim();
+
+        if (!query) return;
+
+        // 1. Add User Message
+        chatBox.innerHTML += `
+            <div class="d-flex justify-content-end mb-3">
+                <div class="p-3 bg-primary text-white rounded" style="max-width: 80%;">${query}</div>
+            </div>`;
+        input.value = '';
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // 2. Add Loading Indicator
+        const loadingId = 'loading-' + Date.now();
+        chatBox.innerHTML += `
+            <div class="d-flex justify-content-start mb-3" id="${loadingId}">
+                <div class="p-3 bg-white border rounded shadow-sm text-muted">
+                    <em>Thinking... <span class="spinner-border spinner-border-sm"></span></em>
+                </div>
+            </div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        try {
+            const response = await fetch('/ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: query })
+            });
+            const data = await response.json();
+            
+            document.getElementById(loadingId).remove();
+
+            // 3. Format Sources
+            let sourceHtml = '';
+            if (data.sources && data.sources.length > 0) {
+                sourceHtml = `<div class="mt-2 small text-muted border-top pt-1">📚 Sources: ${data.sources.join(', ')}</div>`;
+            }
+
+            // 4. Render Markdown Response
+            const htmlAnswer = marked.parse(data.answer);
+
+            chatBox.innerHTML += `
+                <div class="d-flex justify-content-start mb-3">
+                    <div class="p-3 bg-white border rounded shadow-sm" style="max-width: 85%;">
+                        ${htmlAnswer}
+                        ${sourceHtml}
+                    </div>
+                </div>`;
+
+        } catch (err) {
+            document.getElementById(loadingId).innerHTML = '<div class="text-danger">Error: Ensure Ollama is running.</div>';
+        }
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+</script>
+{% endblock %}

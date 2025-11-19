@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header">Upload Knowledge Base</div>
+            <div class="card-body">
+                <form id="upload-form">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Select Document (PDF)</label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".pdf" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Upload & Process</button>
+                </form>
+                <div id="upload-status" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

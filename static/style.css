@@ -1,0 +1,8 @@
+.chat-message { max-width: 80%; }
+.bot-message { float: left; clear: both; }
+.user-message { float: right; clear: both; text-align: right; }
+.user-message div { background-color: #0d6efd; color: white; }
+.sources-small { font-size: 0.8em; color: #666; margin-top: 5px; }
+#chat-box { height: 100%; display: flex; flex-direction: column; }
+
+
